@@ -11,24 +11,20 @@ count = 0
 turtle.shape(image)
 data = pandas.read_csv("50_states.csv")
 states = data.state.to_list()
-print(states)
+guessed_states = []
 
-game_on = True
-while game_on:
-    answer_text = screen.textinput(title=f"{count}/50 Guess the state", prompt="What's another state name?")
+
+while len(guessed_states) < 50:
+    answer_text = screen.textinput(title=f"{count}/50 Correct guesses.", prompt="What's another state name?")
     answer_text = answer_text.title()
     if answer_text in states:
+        guessed_states.append(answer_text)
         count += 1
-        x_position = data[data.state == answer_text].x
-        y_position = data[data.state == answer_text].y
-        x = int(x_position)
-        y = int(y_position)
-
+        state_data = data[data.state == answer_text]
         timmy = turtle.Turtle()
         timmy.penup()
         timmy.hideturtle()
-        timmy.goto(x, y)
-        timmy.write(f"{answer_text}", font=("Courier", 8, "normal"))
-
+        timmy.goto(int(state_data.x),int(state_data.y))
+        timmy.write(f"{state_data.state.item()}", font=("Courier", 8, "normal"))
 
 screen.exitonclick()
