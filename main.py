@@ -17,6 +17,8 @@ guessed_states = []
 while len(guessed_states) < 50:
     answer_text = screen.textinput(title=f"{count}/50 Correct guesses.", prompt="What's another state name?")
     answer_text = answer_text.title()
+    if answer_text == "Exit":
+        break
     if answer_text in states:
         guessed_states.append(answer_text)
         count += 1
@@ -27,4 +29,10 @@ while len(guessed_states) < 50:
         timmy.goto(int(state_data.x),int(state_data.y))
         timmy.write(f"{state_data.state.item()}", font=("Courier", 8, "normal"))
 
-screen.exitonclick()
+missing_states = []
+for state in states:
+    if state not in guessed_states:
+        missing_states.append(state)
+
+missing_data = pandas.DataFrame(missing_states)
+missing_data.to_csv("Missing_states.csv")
